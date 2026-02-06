@@ -9,6 +9,9 @@ import { DetectedDiseasesCard } from "./DetectedDiseasesCard";
 import { AngleAnalysisTabs } from "./AngleAnalysisTabs";
 import { HeatmapsSection } from "./HeatmapsSection";
 import { ProductRecommendationsCard } from "./ProductRecommendationsCard";
+import { QuickWinsCard } from "./QuickWinsCard";
+import { SkincareRoutineCard } from "./SkincareRoutineCard";
+import { DermatologistAppointmentCard } from "./DermatologistAppointmentCard";
 
 export const FaceAnalysisReport = () => {
   // Cast report data to the correct type
@@ -25,6 +28,11 @@ export const FaceAnalysisReport = () => {
       (100 - combined_analysis.combined_wrinkles_score) +
       (100 - combined_analysis.combined_pigmentation_score)) /
     5;
+
+  // Check if there are diseases requiring medical attention
+  const hasUrgentConditions = combined_analysis.detected_diseases.some(
+    (d) => d.requires_medical_attention || d.urgency_level === "urgent"
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,7 +60,10 @@ export const FaceAnalysisReport = () => {
           />
         </div>
 
-        {/* Detailed Metrics */}
+        {/* Quick Wins Section */}
+        <QuickWinsCard concerns={combined_analysis.priority_concerns} />
+
+        {/* Detailed Metrics with Medical/Cosmetic tabs */}
         <SkinMetricsGrid analysis={combined_analysis} />
 
         {/* Priority Concerns & Detected Conditions */}
@@ -60,6 +71,19 @@ export const FaceAnalysisReport = () => {
           <PriorityConcernsCard concerns={combined_analysis.priority_concerns} />
           <DetectedDiseasesCard diseases={combined_analysis.detected_diseases} />
         </div>
+
+        {/* Dermatologist Appointment - shown if urgent conditions exist */}
+        {hasUrgentConditions && (
+          <DermatologistAppointmentCard diseases={combined_analysis.detected_diseases} />
+        )}
+
+        {/* Skincare Routine */}
+        {recommendations.success && recommendations.recommendations.products.length > 0 && (
+          <SkincareRoutineCard
+            products={recommendations.recommendations.products}
+            skinType={combined_analysis.final_skin_type_classification}
+          />
+        )}
 
         {/* Analysis by Angle */}
         <AngleAnalysisTabs analyses={individual_analyses} />
@@ -77,6 +101,11 @@ export const FaceAnalysisReport = () => {
           <ProductRecommendationsCard
             products={recommendations.recommendations.products}
           />
+        )}
+
+        {/* Dermatologist Appointment Section - Always visible for booking */}
+        {!hasUrgentConditions && (
+          <DermatologistAppointmentCard diseases={combined_analysis.detected_diseases} />
         )}
 
         {/* Footer */}
