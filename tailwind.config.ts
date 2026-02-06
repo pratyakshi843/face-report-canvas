@@ -72,6 +72,17 @@ export default {
           mild: "hsl(var(--severity-mild))",
           moderate: "hsl(var(--severity-moderate))",
           high: "hsl(var(--severity-high))",
+          normal: "hsl(var(--severity-normal))",
+        },
+        category: {
+          medical: "hsl(var(--category-medical))",
+          cosmetic: "hsl(var(--category-cosmetic))",
+        },
+        status: {
+          normal: "hsl(var(--status-normal))",
+          mild: "hsl(var(--status-mild))",
+          moderate: "hsl(var(--status-moderate))",
+          severe: "hsl(var(--status-severe))",
         },
       },
       borderRadius: {
