@@ -12,6 +12,7 @@ import { ProductRecommendationsCard } from "./ProductRecommendationsCard";
 import { QuickWinsCard } from "./QuickWinsCard";
 import { SkincareRoutineCard } from "./SkincareRoutineCard";
 import { DermatologistAppointmentCard } from "./DermatologistAppointmentCard";
+import { DailyRoutineTracker } from "@/components/streak/DailyRoutineTracker";
 
 export const FaceAnalysisReport = () => {
   // Cast report data to the correct type
@@ -63,6 +64,17 @@ export const FaceAnalysisReport = () => {
         {/* Quick Wins Section */}
         <QuickWinsCard concerns={combined_analysis.priority_concerns} />
 
+        {/* Skincare Routine */}
+        {recommendations.success && recommendations.recommendations.products.length > 0 && (
+          <SkincareRoutineCard
+            products={recommendations.recommendations.products}
+            skinType={combined_analysis.final_skin_type_classification}
+          />
+        )}
+
+        {/* Daily Routine Tracker with Streak System */}
+        <DailyRoutineTracker />
+
         {/* Detailed Metrics with Medical/Cosmetic tabs */}
         <SkinMetricsGrid analysis={combined_analysis} />
 
@@ -75,14 +87,6 @@ export const FaceAnalysisReport = () => {
         {/* Dermatologist Appointment - shown if urgent conditions exist */}
         {hasUrgentConditions && (
           <DermatologistAppointmentCard diseases={combined_analysis.detected_diseases} />
-        )}
-
-        {/* Skincare Routine */}
-        {recommendations.success && recommendations.recommendations.products.length > 0 && (
-          <SkincareRoutineCard
-            products={recommendations.recommendations.products}
-            skinType={combined_analysis.final_skin_type_classification}
-          />
         )}
 
         {/* Analysis by Angle */}
