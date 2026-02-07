@@ -84,6 +84,13 @@ export default {
           moderate: "hsl(var(--status-moderate))",
           severe: "hsl(var(--status-severe))",
         },
+        streak: {
+          fire: "hsl(var(--streak-fire))",
+          complete: "hsl(var(--streak-complete))",
+          incomplete: "hsl(var(--streak-incomplete))",
+          "bg-complete": "hsl(var(--streak-bg-complete))",
+          "bg-incomplete": "hsl(var(--streak-bg-incomplete))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
